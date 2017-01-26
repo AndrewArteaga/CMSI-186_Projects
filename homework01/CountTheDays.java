@@ -23,7 +23,7 @@
     if (isValidDate(a, b, c)!=true || isValidDate(d, e, f)!=true) {
           System.out.println("One of the dates is not valid.");
      } else if (isValidDate(a, b, c)==true && isValidDate(d, e, f)==true) {
-          System.out.println("The difference between the two dates is " + daysBetween(a, b, c, d, e, f ) + " .");
+          System.out.println("The difference between the two dates is " + daysBetween(a, b, c, d, e, f ) + ".");
       }
     }
 }
