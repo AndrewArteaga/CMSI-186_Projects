@@ -208,8 +208,8 @@ public class CalendarStuff {
  *  Author        :  Andrew Arteaga
  *  Date          :  2017-01-26
  *  Description   :  Outputs the absolute number of days between two given dates which are specified via args[0] through args[5].
-                     The order of the two dates is irrelevant, uses all require methods defined in CalendarStuff, and this program 
-                     extends CalendarStuff.
+ *                   The order of the two dates is irrelevant, uses all require methods defined in CalendarStuff, and this program 
+ *                   extends CalendarStuff.
  *  @version 1.0.0  2017-01-26  Andrew Arteaga  Initial writing and release
  */
  public class CountTheDays extends CalendarStuff{
