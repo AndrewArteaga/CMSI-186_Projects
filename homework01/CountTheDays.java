@@ -17,7 +17,7 @@
    	long d = Long.parseLong(args[3]);
    	long e = Long.parseLong(args[4]);
    	long f = Long.parseLong(args[5]);
-   	if (args.length < 6) {
+   	if (args.length != 6) {
           System.out.println("Please add two different, valid dates in numbers and in the of format: month1, day1, year1, month2, day2, year2. It does not matter the order.");
       } else if (isValidDate(a, b, c)!=true || isValidDate(d, e, f)!=true) {
       	  System.out.println("One of the dates is not valid.");
