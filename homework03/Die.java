@@ -1,0 +1,192 @@
+/** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  File name     :  Die.java
+ *  Purpose       :  Provides a class describing a single die that can be rolled
+ *  @author       :  Andrew Arteaga
+ *  Date          :  2017-02-06
+ *  Description   :  This class provides the data fields and methods to describe a single game die.  A
+ *                   die can have "N" sides.  Sides are randomly assigned sequential pip values, from 1
+ *                   to N, with no repeating numbers.  A "normal" die would thus has six sides, with the
+ *                   pip values [spots] ranging in value from one to six.  Includes the following:
+ *                   public Die( int nSides );                  // Constructor for a single die with "N" sides
+ *                   public int roll();                         // Roll the die and return the result
+ *                   public int getValue()                      // get the value of this die
+ *                   public void setSides()                     // change the configuration and return the new number of sides
+ *                   public String toString()                   // Instance method that returns a String representation
+ *                   public static String toString()            // Class-wide method that returns a String representation
+ *                   public static void main( String args[] );  // main for testing porpoises
+ *
+ *  Notes         :  Restrictions: no such thing as a "two-sided die" which would be a coin, actually.
+ *                   Also, no such thing as a "three-sided die" which is a physical impossibility without
+ *                   having it be a hollow triangular prism shape, presenting an argument as to whether
+ *                   the inner faces are faces which then should be numbered.  Just start at four for
+ *                   minimum number of faces.  However, be aware that a four-sided die dosn't have a top
+ *                   face to provide a value, since it's a tetrahedron [pyramid] so you'll have to figure
+ *                   out a way to get the value, since it won't end up on its point.
+ *
+ *  Warnings      :  None
+ *  Exceptions    :  IllegalArgumentException when the number of sides or pips is out of range
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Revision Histor
+ *  ---------------
+ *            Rev      Date     Modified by:  Reason for change/modification
+ *           -----  ----------  ------------  -----------------------------------------------------------
+ *  @version 1.0.0  2017-02-06  B.J. Johnson  Initial writing and release
+ *  @version 1.1.0  2017-02-17  B.J. Johnson  Filled in method code
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+public class Die {
+
+  /**
+   * private instance data
+   */
+   private int sides;
+   private int pips;
+   private final int MINIMUM_SIDES = 4;
+
+   // public constructor:
+  /**
+   * constructor
+   * @param nSides int value containing the number of sides to build on THIS Die
+   * @throws       IllegalArgumentException
+   * Note: parameter must be checked for validity; invalid value must throw "IllegalArgumentException"
+   */
+   public Die( int nSides ) {
+    if (nSides < MINIMUM_SIDES) {
+      throw new IllegalArgumentException("Exception has been thrown!");
+    }
+    this.sides = nSides;
+    this.pips = 1;
+   }
+
+  /**
+   * Roll THIS die and return the result
+   * @return  integer value of the result of the roll, randomly selected
+   */
+   public int roll() {
+    int a = 0;
+    int minimum = 1;
+    int maximum = this.sides;
+    if (sides >= MINIMUM_SIDES) {
+    a = minimum + (int)(Math.random()* maximum);
+    } else {
+    a = 0;
+    }
+    this.pips = a;
+    return a;
+    }
+
+  /**
+   * Get the value of THIS die to return to the caller; note that the way
+   *  the count is determined is left as a design decision to the programmer
+   *  For example, what about a four-sided die - which face is considered its
+   *  "value"?
+   * @return the pip count of THIS die instance
+   */
+   public int getValue() {
+      int pipsCount = this.pips;
+      return pipsCount;
+   }
+
+  /**
+   * @param  int  the number of sides to set/reset for this Die instance
+   * @return      The new number of sides, in case anyone is looking
+   * @throws      IllegalArgumentException
+   */
+   public int setSides( int nSides ) {
+    try {
+    if (nSides < MINIMUM_SIDES) {
+      throw new IllegalArgumentException("Exception has been thrown yet again!");
+    } } catch (Exception e) {
+      System.err.println("This is not a valid die yet again. A die has a minimum of four sides!");
+        } 
+    this.sides = nSides;
+    return sides;
+   }
+
+
+  /**
+   * Public Instance method that returns a String representation of THIS die instance
+   * @return String representation of this Die
+   */
+   public String toString() {
+    String strDieInstance = Integer.toString(this.pips);
+    return strDieInstance;
+   }
+
+  /**
+   * Class-wide method that returns a String representation of THIS die instance
+   * @return String representation of this Die
+   */
+   public static String toString( Die d ) {
+    return "" + d.getValue();
+    }
+
+  /**
+   * A little test main to check things out
+   */
+   public static void main( String[] args ) {
+    
+    Die a = null;
+      try {
+        a = new Die(3);
+      } 
+      catch (IllegalArgumentException i) {
+        System.err.println("This is not a valid die. A die has a minimum of four sides!");
+      }
+    
+    Die b = new Die(4);
+      System.out.println( "The First Roll for the 4 sided die is " + b.roll() + ".");
+      System.out.println( "Second Roll for the 4 sided die is " + b.roll() + ".");
+      System.out.println( "Third Roll for the 4 sided die is " + b.roll() + ".");
+      System.out.println( "The number of pips from the last roll for the 4 sided die was " + b.getValue() + ".");
+      try {
+        b.setSides(1);
+      } 
+      catch (IllegalArgumentException i) {
+        System.err.println("This is still not a valid die. A die has a minimum of four sides!");
+      }
+      System.out.println( "Here is the public instance string, " + b.toString() + ".");
+      System.out.println( "Here is the class-wide instance string, " + b.toString(b) + ".");
+
+    Die c = new Die(5);
+      System.out.println( "The First Roll for the 5 sided die is " + c.roll() + ".");
+      System.out.println( "Second Roll for the 5 sided die is " + c.roll() + ".");
+      System.out.println( "Third Roll for the 5 sided die is " + c.roll() + ".");
+      System.out.println( "The number of pips from the last roll for the 5 sided die was " + c.getValue() + ".");
+      try {
+        System.out.println("The reset die has " + c.setSides(20) + " sides.");
+      } 
+      catch (IllegalArgumentException i) {
+        System.err.println("This is still not a valid die. A die has a minimum of four sides!");
+      }
+      System.out.println( "Here is the public instance string, " + c.toString() + ".");
+      System.out.println( "Here is the class-wide instance string, " + c.toString(c) + ".");
+
+    Die d= new Die(20);
+      System.out.println( "The First Roll for the 20 sided die is " + d.roll() + ".");
+      System.out.println( "Second Roll for the 20 sided die is " + d.roll() + ".");
+      System.out.println( "Third Roll for the 20 sided die is " + d.roll() + ".");
+      System.out.println( "The number of pips from the last roll for the 20 sided die was " + d.getValue() + ".");
+      try {
+        System.out.println("The reset die has " + d.setSides(10) + " sides.");
+      } 
+      catch (IllegalArgumentException i) {
+        System.err.println("This is still not a valid die. A die has a minimum of four sides!");
+      }
+      System.out.println( "Here is the public instance string, " + d.toString() + ".");
+      System.out.println( "Here is the class-wide instance string, " + d.toString(d) + ".");  
+    
+    Die e = new Die(100);
+      System.out.println( "The First Roll for the 100 sided die is " + e.roll() + ".");
+      System.out.println( "Second Roll for the 100 sided die is " + e.roll() + ".");
+      System.out.println( "Third Roll for the 100 sided die is " + e.roll() + ".");
+      System.out.println( "The number of pips from the last roll for the 100 sided die was " + e.getValue() + ".");
+      try {
+        System.out.println("The reset die has " + e.setSides(9) + " sides.");
+      } 
+      catch (IllegalArgumentException i) {
+        System.err.println("This is still not a valid die. A die has a minimum of four sides!");
+      }
+      System.out.println( "Here is the public instance string, " + e.toString() + ".");
+      System.out.println( "Here is the class-wide instance string, " + e.toString(e) + ".");
+  }
+}
