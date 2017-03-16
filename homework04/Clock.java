@@ -21,10 +21,10 @@ public class Clock {
   /**
    *  Class field definintions go here
    */
-  int hours;
-  int minutes; 
-  double seconds;
-  double timeIncrement;
+  private int hours;
+  private int minutes; 
+  private double seconds;
+  private double timeIncrement;
   private double hourTheta;
   private double minuteTheta;
   private double handsTheta;
@@ -68,25 +68,24 @@ public class Clock {
   /**
    *  Methods go here
    *
-   *  Method to set the next tick from the time increment
+   *  Method to calculate the next tick from the time increment
+   *  @return double-precision value of the current clock tick
    */
-   public void tick(double timeIncrement){
+   public double tick(double timeIncrement){
     String valid = Double.toString(timeIncrement);
     if (validateTimeSliceArg(valid) != -1.0) {
-    this.seconds = this.seconds + timeIncrement;
-    while (this.seconds >= 60){
-        this.seconds = this.seconds - 60;
-        this.minutes = this.minutes + 1;
-    while (this.minutes >= 60){
-        this.minutes = this.minutes - 60;
-        this.hours = this.hours + 1;
-    while (this.hours > 12){
-        this.hours = this.hours - 12;
+      totalSeconds = totalSeconds + timeIncrement;
+      if (totalSeconds > 43200) {
+        totalSeconds = totalSeconds - 43200;
       }
+      hours = (int)Math.floor(totalSeconds/3600);
+      minutes = (int)Math.floor(((totalSeconds/3600) - hours) * 60);
+      seconds = Math.floor(((((totalSeconds/3600) - hours) * 60) - minutes) * 60);
+      return totalSeconds;
     }
-      }
-    } 
-}
+      System.out.println( "Please add a time Splice less than 1800 and greater than 0" );
+      return -1.0;
+  }
   /**
    *  Method to validate the angle argument
    *  @param   argValue  String from the main programs args[0] input
@@ -127,7 +126,7 @@ public class Clock {
    *  @return double-precision value of the hour hand location
    */
    public double getHourHandAngle() {
-    hourTheta = (.5 * (60 * hours + minutes)) + (seconds * 0.00834);
+    hourTheta = totalSeconds * 0.00834;
     if(hourTheta >= 360){
       hourTheta = hourTheta - 360;
     }
@@ -139,7 +138,7 @@ public class Clock {
    *  @return double-precision value of the minute hand location
    */
    public double getMinuteHandAngle() {
-    minuteTheta = (6 * minutes) + (seconds * 0.1);
+    minuteTheta = (totalSeconds * 0.1) % 360;
     if(minuteTheta >= 360){
       minuteTheta = minuteTheta - 360;
     }
@@ -172,8 +171,11 @@ public class Clock {
    *  Method to return a String representation of this clock
    *  @return String value of the current clock
    */
-   public String toString(Clock clock) {
-      return "The time is " + clock.hours + " hours " + clock.minutes + " minutes and " +clock.seconds + " seconds";
+   public String toString() {
+    hours = (int)Math.floor(getTotalSeconds()/3600);
+    minutes = (int)Math.floor(((getTotalSeconds()/3600) - hours) * 60);
+    seconds = Math.floor(((((getTotalSeconds()/3600) - hours) * 60) - minutes) * 60);
+    return "The time is " + hours + " hours " + minutes + " minutes and " + seconds + " seconds";
    }
 
   /**
@@ -188,30 +190,37 @@ public class Clock {
       System.out.println( "\nCLOCK CLASS TESTER PROGRAM\n" +
                           "--------------------------\n" );
       System.out.println( "  Creating a new clock: " );
-      Clock a = new Clock(9, 40 , 7.7);
-      System.out.println( "    New clock was created: " + a.toString(a));
+      Clock a = new Clock(12, 59 , 59.0);
+      System.out.println( "    New clock was created: " + a.toString());
       System.out.println("The hour hand's angle is "  + a.getHourHandAngle() + " degrees");
       System.out.println("The minute hand's angle is " + a.getMinuteHandAngle() + " degrees");
       System.out.println("The angle between the minute and the hour hand is " + a.getHandAngle() + " degrees");
       System.out.println("The total number of seconds is " + a.getTotalSeconds() + " seconds");
-      a.tick(180.0);
-      System.out.println( "    Ticks have been added so a new clock was created: " + a.toString(a));
-      System.out.println("The hour hand's angle is "  + a.getHourHandAngle() + " degrees");
+      System.out.println("You have added " + Math.abs(a.getTotalSeconds() - a.tick(1800.0) - 43200)+ " ticks");
+      System.out.println("\nThe hour hand's angle is "  + a.getHourHandAngle() + " degrees");
       System.out.println("The minute hand's angle is " + a.getMinuteHandAngle() + " degrees");
       System.out.println("The angle between the minute and the hour hand is " + a.getHandAngle() + " degrees");
-      System.out.println("The total number of seconds is " + a.getTotalSeconds() + " seconds");
+      System.out.println("The new number of seconds is " + a.getTotalSeconds() + " seconds");
+      System.out.println( "   The new clock is: " + a.toString());
 
       System.out.println( "\n  Creating a new clock: " );
       Clock bs = new Clock(0,600,423.0);
-      
+ 
       System.out.println( "\n  Creating a new clock: " );
-      Clock b = new Clock(9,15,40.0);
-      System.out.println( "    New clock was created: " + b.toString(b));
+      Clock b = new Clock(1,30,0.0);
+      System.out.println( "    New clock was created: " + b.toString());
       System.out.println("The hour hand's angle is "  + b.getHourHandAngle() + " degrees");
       System.out.println("The minute hand's angle is " + b.getMinuteHandAngle() + " degrees");
       System.out.println("The angle between the minute and the hour hand is " + b.getHandAngle() + " degrees");
       System.out.println("The total number of seconds is " + b.getTotalSeconds() + " seconds");
-      b.tick(180000.0);
+      System.out.println("You have added " + Math.abs(b.getTotalSeconds() - b.tick(-1.0)) + " ticks");
+
+      System.out.println("\nYou have added " + Math.abs(b.getTotalSeconds() - b.tick(1500.0)) + " ticks");
+      System.out.println("The hour hand's angle is "  + b.getHourHandAngle() + " degrees");
+      System.out.println("The minute hand's angle is " + b.getMinuteHandAngle() + " degrees");
+      System.out.println("The angle between the minute and the hour hand is " + b.getHandAngle() + " degrees");
+      System.out.println("The new number of seconds is " + b.getTotalSeconds() + " seconds");
+      System.out.println( "   The new clock is: " + b.toString());
 
       System.out.println( "    Testing validateAngleArg()....");
       System.out.print( "      sending '  0 degrees', expecting double value   0.0" );
