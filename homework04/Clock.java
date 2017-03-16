@@ -152,6 +152,9 @@ public class Clock {
    */
    public double getHandAngle() {
     handsTheta = Math.abs(hourTheta - minuteTheta);
+    if (handsTheta > 180){
+      handsTheta = 360 - handsTheta;
+    }
     return handsTheta;
    }
 
