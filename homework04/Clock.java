@@ -24,7 +24,7 @@ public class Clock {
   int hours;
   int minutes; 
   double seconds;
-  private double timeIncrement;
+  double timeIncrement;
   private double hourTheta;
   private double minuteTheta;
   private double handsTheta;
@@ -99,7 +99,6 @@ public class Clock {
     if (validAngle < 0 || validAngle > 360){
         throw new NumberFormatException("Enter a valid angle");
       } }   catch (NumberFormatException e) {
-       System.err.println("This is not a valid angle");
        return -1.0;
     }
     return validAngle;
@@ -118,7 +117,6 @@ public class Clock {
    public double validateTimeSliceArg( String argValue ) {
     double validTS = Double.parseDouble(argValue);
     if (validTS < 0 || validTS > 1800){
-        System.out.println("Enter a valid time splice");
         return -1.0;
       } else {
     return validTS;
