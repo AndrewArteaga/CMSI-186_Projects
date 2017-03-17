@@ -126,10 +126,7 @@ public class Clock {
    *  @return double-precision value of the hour hand location
    */
    public double getHourHandAngle() {
-    hourTheta = totalSeconds * 0.00834;
-    if(hourTheta >= 360){
-      hourTheta = hourTheta - 360;
-    }
+    double hourTheta = (totalSeconds * 0.00834) % 360;
     return hourTheta;
    }
 
@@ -139,9 +136,6 @@ public class Clock {
    */
    public double getMinuteHandAngle() {
     minuteTheta = (totalSeconds * 0.1) % 360;
-    if(minuteTheta >= 360){
-      minuteTheta = minuteTheta - 360;
-    }
     return minuteTheta;
    }
 
@@ -196,7 +190,7 @@ public class Clock {
       System.out.println("The minute hand's angle is " + a.getMinuteHandAngle() + " degrees");
       System.out.println("The angle between the minute and the hour hand is " + a.getHandAngle() + " degrees");
       System.out.println("The total number of seconds is " + a.getTotalSeconds() + " seconds");
-      System.out.println("You have added " + Math.abs(a.getTotalSeconds() - a.tick(1800.0) - 43200)+ " ticks");
+      System.out.println("You have added " + Math.abs(a.getTotalSeconds() - a.tick(1800.0) - 43200) + " ticks");
       System.out.println("\nThe hour hand's angle is "  + a.getHourHandAngle() + " degrees");
       System.out.println("The minute hand's angle is " + a.getMinuteHandAngle() + " degrees");
       System.out.println("The angle between the minute and the hour hand is " + a.getHandAngle() + " degrees");
