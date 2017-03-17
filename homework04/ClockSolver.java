@@ -25,11 +25,11 @@ public class ClockSolver {
   /**
    *  Class field definintions go here
    */
-   private static double angle;
-   private static double timeSplice;
-   private final double MAX_TIME_SLICE_IN_SECONDS  = 1800.00;
-   private final double DEFAULT_TIME_SLICE_SECONDS = 60.0;
-   private final double EPSILON_VALUE              = 0.1;      // small value for double-precision comparisons
+   private double angle;
+   private double timeSplice;
+   private static final double MAX_TIME_SLICE_IN_SECONDS  = 1800.00;
+   private static final double DEFAULT_TIME_SLICE_SECONDS = 60.0;
+   private static final double EPSILON_VALUE              = 10.0;      // small value for double-precision comparisons
 
   /**
    *  Constructor
@@ -62,13 +62,15 @@ public class ClockSolver {
       System.out.println("Enter desired time splice");
       String input2 = scanner.nextLine();
       if ( -1.0 == b.validateTimeSliceArg(input2)){
-      System.out.println("Enter a valid time splice");
+        System.out.println("Enter a valid time splice");
+        System.exit( 0 );
       } 
       if (b.validateTimeSliceArg(input2) == 0){
         System.out.println("Time splice set to 60 seconds.");
         timeSplice = 60.0;
-      } 
-      timeSplice = Double.parseDouble(input2);    
+      } else {
+        timeSplice = Double.parseDouble(input2); 
+      }   
    } 
   /**
    *  The main program starts here
@@ -84,17 +86,20 @@ public class ClockSolver {
      double[] timeValues = new double[3];
      cse.handleInitialArguments( args );
      double twelveHourDay = 0.0;
-     System.out.println("The angle of " + angle + " degrees is seen at these times in a twelve hour day:" );
+     System.out.println("The angle of " + cse.angle + " degrees is seen at these times in a twelve hour day:" );
     while (twelveHourDay <= 43200){
-        if (a.getMinuteHandAngle() == a.getHourHandAngle() ) {
-          System.out.println(a.toString(a));
-          a.tick(timeSplice);
-          twelveHourDay  = twelveHourDay  + timeSplice;
-        }
-        else{
-          a.tick(timeSplice);
-          twelveHourDay  = twelveHourDay  + timeSplice;
-        }
+      twelveHourDay  = twelveHourDay  + a.tick(cse.timeSplice);
+      int hours = (int)Math.floor(twelveHourDay/3600);
+      int minutes = (int)Math.floor(((twelveHourDay/3600) - hours) * 60);
+      double seconds = Math.floor(((((twelveHourDay/3600) - hours) * 60) - minutes) * 60);
+      double hourTheta = (twelveHourDay * 0.00834) % 360;
+      double minuteTheta = (twelveHourDay * 0.1) % 360;
+      double handsTheta = Math.abs(hourTheta - minuteTheta);
+        if (handsTheta > 180){
+           handsTheta = 360 - handsTheta;
+         }
+      if (Math.abs(cse.angle - handsTheta) <= EPSILON_VALUE) {
+      System.out.println("The times when the angles of the hand and minute hands are " + cse.angle + " degrees is at " + hours + ":" + minutes +":" +seconds);
       }
    }      
-}
+}}
