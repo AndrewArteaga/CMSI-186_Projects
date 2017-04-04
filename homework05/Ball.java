@@ -43,14 +43,9 @@ public class Ball {
    *  @return double-precision value the total seconds private variable
    */
    public double getVelocity(){
-    if (speedX/(-1*speedX) != -1 || speedY/(-1*speedX) != -1) {
-    totalVelocity = -1 * Math.sqrt((speedY * speedY) + (speedX * speedX));
-    return totalVelocity;
-    } else {
     totalVelocity = Math.sqrt((speedY * speedY) + (speedX * speedX));
     return totalVelocity;
-    }
-   }
+  }
    /**
    *  Method to update the velocity in the x and the y direction when taking into account of friction 
    */
