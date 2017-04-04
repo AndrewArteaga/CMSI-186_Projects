@@ -43,8 +43,13 @@ public class Ball {
    *  @return double-precision value the total seconds private variable
    */
    public double getVelocity(){
+    if (speedX/(-1*speedX) != -1 || speedY/(-1*speedX) != -1) {
+    totalVelocity = -1 * Math.sqrt((speedY * speedY) + (speedX * speedX));
+    return totalVelocity;
+    } else {
     totalVelocity = Math.sqrt((speedY * speedY) + (speedX * speedX));
     return totalVelocity;
+    }
    }
    /**
    *  Method to update the velocity in the x and the y direction when taking into account of friction 
@@ -96,6 +101,7 @@ public class Ball {
     System.out.println( " Collision? " + a.checkCollision(-168.900,-223.9));
     System.out.println( " Collision? " + a.checkCollision(20.0,16.0));
 
+    System.out.println( "\n Creating a new ball: " );
     Ball b = new Ball(-20.0,-12.0,8.0,6.0);
     System.out.println( " The velocity of the ball is " + b.getVelocity() + " ft/s.");
     System.out.println( " Stringy representation of the ball: " + b.toString());
