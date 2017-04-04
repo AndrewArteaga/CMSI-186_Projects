@@ -64,7 +64,7 @@ public class SoccerSim {
         } else {       
         timeSplice = Double.parseDouble(input2); 
       }
-      double b[]=new double[value * 4];
+      double b[] = new double[value * 4];
       for (int i = 0; i < value; i++) {
         scanner = new Scanner(System.in);
         System.out.println("Enter the " + (i+1) + " ball's xPosition");
@@ -86,22 +86,20 @@ public class SoccerSim {
       Ball d = null;
       int j = 0; 
       int arrayLength = b.length;
-      double xPosition[]=new double[arrayLength/4];
-      double yPosition[]=new double[arrayLength/4];
-      System.out.println(b[1]);    
+      double xPosition[]=new double[b.length/4];
+      double yPosition[]=new double[b.length/4];
       Ball c = new Ball(0,0,0.0,0.0);
       for (int i = 0; i < arrayLength/4; i++) {
-      double x = b[i];
-      double y = b[i+1];
-      xPosition[i] = b[i];
-      yPosition[i] = b[i+1];
-      double xSpeed = b[i+2];
-      double ySpeed = b[i+3];
-      System.out.println("Ball #" + (i+1) + " : " + x + "," + y + "   Speed: " + xSpeed + "," + ySpeed + " ft/s.");
-      d = new Ball(x,y,xSpeed,ySpeed);
-      j = j + 1;
-
-    }
+        double x = b[i];
+        xPosition[i] = b[i];
+        double y = b[i+1];
+        yPosition[i] = b[i];
+        double xSpeed = b[i+2];
+        double ySpeed = b[i+3];
+        System.out.println("Ball #" + (i + 1) + " initial position is " + x + "," + y + " velocity is " + xSpeed + " ft/s" + "," + ySpeed +  " ft/s.");
+        d = new Ball(x,y,xSpeed,ySpeed);
+        j = j + 1;
+      }
       Clock e = new Clock(0,0,0);
       int i = 0;
       double twelveHourDay = 0.0;
@@ -111,13 +109,20 @@ public class SoccerSim {
         int hours = (int)Math.floor(twelveHourDay/3600);
         int minutes = (int)Math.floor(((twelveHourDay/3600) - hours) * 60);
         double seconds = Math.floor(((((twelveHourDay/3600) - hours) * 60) - minutes) * 60);
-        System.out.println("Ball " + (i + 1) + " current position/velocity is " + d.toString());
+        System.out.println("Ball #" + (i + 1) + " current position/velocity is " + d.toString());
         System.out.println("The time is " + hours + " hours " + minutes + " minutes and " + seconds + " seconds");
-        i = i + 1;
-        d.frictionBall();
-        if (d.getVelocity()<5){
-          System.out.println("Collision");
-          break;
+        i = i + 1; 
+        if (d.getVelocity()<1){
+            System.out.println("Balls stopped no collision");
+            break;
+        } else if (d.checkCollision(0.0,0.0) == true) {
+            System.out.println("Ball hit the pole");
+            break;
+        } else if (d.checkCollision(xPosition[i],yPosition[i]) == true) {
+            System.out.println("Balls have Collided");
+            break;
+        } else {
+            d.frictionBall();
         }
      }
   }
