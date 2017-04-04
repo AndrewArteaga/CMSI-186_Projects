@@ -105,10 +105,13 @@ public class Ball {
     Ball b = new Ball(-20.0,-12.0,8.0,6.0);
     System.out.println( " The velocity of the ball is " + b.getVelocity() + " ft/s.");
     System.out.println( " Stringy representation of the ball: " + b.toString());
-    System.out.println( " The velocity of the ball is " + b.getVelocity() + " ft/s.");
-    System.out.println( " Stringy representation of the ball: " + b.toString());
     System.out.println( " Collision? " + b.checkCollision(-14.0,-1.0));
     System.out.println( " Collision? " + b.checkCollision(-20.0,-16));
+    b.frictionBall();
+    b.positonBall(18);
+    System.out.println( " The velocity of the ball is " + b.getVelocity() + " ft/s.");
+    System.out.println( " Stringy representation of the ball: " + b.toString());
+   
 
    }
 }
