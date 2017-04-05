@@ -96,7 +96,7 @@ public class SoccerSim {
         yPosition[i] = b[i];
         double xSpeed = b[i+2];
         double ySpeed = b[i+3];
-        System.out.println("Ball #" + (i + 1) + " initial position is " + x + "," + y + " velocity is " + xSpeed + " ft/s" + "," + ySpeed +  " ft/s.");
+        System.out.println("Ball #" + (i+1) + " initial position is " + x + "," + y + " velocity is " + xSpeed + " ft/s" + "," + ySpeed +  " ft/s.");
         d = new Ball(x,y,xSpeed,ySpeed);
         j = j + 1;
       }
@@ -109,21 +109,27 @@ public class SoccerSim {
         int hours = (int)Math.floor(twelveHourDay/3600);
         int minutes = (int)Math.floor(((twelveHourDay/3600) - hours) * 60);
         double seconds = Math.floor(((((twelveHourDay/3600) - hours) * 60) - minutes) * 60);
-        System.out.println("Ball #" + (i + 1) + " current position/velocity is " + d.toString());
+        while (i < arrayLength/4) {
+        d.getVelocity();
+        System.out.println("Ball's current position/velocity is " + d.toString() );
         System.out.println("The time is " + hours + " hours " + minutes + " minutes and " + seconds + " seconds");
-        i = i + 1; 
         if (d.getVelocity()<1){
             System.out.println("Balls stopped no collision");
+            System.exit( 2 );
             break;
         } else if (d.checkCollision(0.0,0.0) == true) {
             System.out.println("Ball hit the pole");
+            System.exit( 2 );
             break;
         } else if (d.checkCollision(xPosition[i],yPosition[i]) == true) {
             System.out.println("Balls have Collided");
-            break;
-        } else {
+            System.exit( 2 );
+            break; 
+        }  else {
             d.frictionBall();
         }
+         i = i + 1; 
+      }
      }
   }
 }
