@@ -45,8 +45,7 @@ public class FibonacciTester {
       GinormousInt c = new GinormousInt(1);
       System.out.println("The " + 1 + " term is equal to "  + 0);
       System.out.println("The " + 2 + " term is equal to "  + 1);  
-      System.out.println("The " + 3 + " term is equal to "  + 1);  
-      for(int i=3;i<Integer.parseInt(input);i++) { 
+      for(int i=2;i<Integer.parseInt(input);i++) { 
         c = b.plus(a);
         a = b;
         b = c;
