@@ -20,7 +20,7 @@
   *  Had massive help stackoverflow 
   *  http://stackoverflow.com/questions/5318068/very-large-vofs-in-java-without-using-java-math-biginteger/5318896#5318896
   *  Particulary ePaul who uses concepts I learned from Logic Design by changing the base or radix of the
-  *  system to compute the math a lot easier
+  *  system to compute the math a lot easier and walked me through the whole process
   *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
   */
 import java.util.Arrays;
@@ -119,9 +119,10 @@ public class GinormousInt{
     }
   }
   /**
-   * multiplies the GinormousInts
+   * multiplies the GinormousInts, has two helper methods to account for carry over and etc.
+   * @return multiplied GinormousInts
    */
-  private void multiplyRemainder(int[] result, int resultIndex, int firstFactor, int secondFactor) {
+  private void multiplyCarry(int[] result, int resultIndex, int firstFactor, int secondFactor) {
     long prod = (long)firstFactor * (long)secondFactor;
     int prodDigit = (int)(prod % BASE9);
     int carry = (int)(prod / BASE9);
@@ -130,7 +131,7 @@ public class GinormousInt{
   private void multiplyOther(int[] result, int resultIndex, int[] leftFactor, int[] rightFactor) {
     for(int i = 0; i < leftFactor.length; i++) {
       for(int j = 0; j < rightFactor.length; j++) {
-        multiplyRemainder(result, resultIndex - (i + j), leftFactor[leftFactor.length-i-1], rightFactor[rightFactor.length-j-1]);
+        multiplyCarry(result, resultIndex - (i + j), leftFactor[leftFactor.length-i-1], rightFactor[rightFactor.length-j-1]);
        }
     }
   }
@@ -139,6 +140,37 @@ public class GinormousInt{
     multiplyOther(result, result.length-1, this.largeArray, that.largeArray);
    return new GinormousInt(result);
   }
+ /**
+   * divides the GinormousInts, has two helper methods to account for remainder and etc.
+   * @return divided GinormousInts
+   */
+    private int divideOther(int[] result, int resultIndex, int divident, int lastRemainder, int divisor) {
+      assert divisor < BASE9;
+      assert lastRemainder < divisor;
+      long ent = divident + (long)BASE9 * lastRemainder;    
+      long quot = ent / divisor;
+      long rem = ent % divisor;
+      assert quot < BASE9;
+      assert rem < divisor;
+      result[resultIndex] = (int)quot;
+      return (int)rem;
+    }
+    private int divideRemainder(int[] result, int resultIndex, int[] divident, int dividentIndex, int divisor) {
+        int remainder = 0;
+        for(; dividentIndex < divident.length; dividentIndex++, resultIndex++) {
+            remainder = divideOther(result, resultIndex, divident[dividentIndex], remainder, divisor);
+        }
+        return remainder;
+    }
+    public GinormousInt division(int divisor) {
+        if(divisor <= 0 || BASE9 <= divisor) {
+          throw new IllegalArgumentException("enter valid divisor");
+        }
+        int[] result = new int[largeArray.length];
+        divideRemainder(result, 0, largeArray, 0, divisor);
+        return new GinormousInt(result);
+    }
+
     /**
      * compares GinormousInts, also includes equal method
      * @return -1 when less than, 0 if equal, and 1 if greater than
@@ -176,6 +208,9 @@ public class GinormousInt{
     
     GinormousInt d = c.multiply(b);
     System.out.println(d.toDecimalString());
+
+    GinormousInt e = d.division(1000);
+    System.out.println(e.toDecimalString());
 
     System.out.println("c <=> b: " + c.compareTo(b));
     System.out.println("b <=> c: " + b.compareTo(c));
